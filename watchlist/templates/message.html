@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Message</h3>
+    {% if current_user.is_authenticated %}
+    <div class="form-message">
+        <form method="post" class="form">
+            <div class="form-input">
+                <label class="form-control-label" for="name">Name</label>
+                <input class="form-control" type="text" name="name" autocomplete="off" required>
+            </div>
+            <div class="form-input">
+                <label class="form-control-label" for="message">Message</label>
+                <textarea class="form-control" name="message" required></textarea>
+            </div>
+            <input class="btn btn-secondary" type="submit" name="submit" value="Submit">
+        </form>
+    </div>
+    {% endif %}
+    <h5>{{ messages|length }} messages</h5>
+    <div class="list-group">
+        {% for message in messages %}
+        <a class="list-group-item list-group-item-action flex-column">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1 text-success">
+                    {{ message.name }}
+                    <small class="text-muted">#{{ message.id }}</small>
+                </h5>
+            </div>
+        <p class="mb-1">{{ message.message }}</p>
+        </a>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -2,7 +2,7 @@ from flask import request,url_for,render_template,redirect,flash
 from flask_login import login_required,current_user,logout_user,login_user
 
 from watchlist import app,db
-from watchlist.models import User,Movie
+from watchlist.models import User,Movie,Message
 
 @app.route('/login',methods=['GET','POST'])
 def login():
@@ -87,3 +87,18 @@ def delete(movie_id):
     db.session.commit()
     flash('Delete Completed.')
     return redirect(url_for('index'))
+
+@app.route('/message',methods=['GET','POST'])
+def message():
+    if request.method=='POST':
+        name = request.form['name']
+        message = request.form['message']
+        if not name or not message:
+            return redirect(url_for('message'))
+        messages=Message(name=name,message=message)
+        db.session.add(messages)
+        db.session.commit()
+        flash('Message Add Success.')
+        return redirect(url_for('message'))
+    messages = Message.query.order_by(Message.id.desc()).all()
+    return render_template('message.html',messages=messages)

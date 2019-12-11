@@ -1,5 +1,5 @@
 import click
-from watchlist import db
+from watchlist import app,db
 from watchlist.models import User,Movie
 
 
